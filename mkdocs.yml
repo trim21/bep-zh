@@ -1,0 +1,15 @@
+site_name: BEP
+theme:
+  name: material
+  language: zh
+  #  font: false
+  font:
+    text: Microsoft YaHei
+plugins:
+  - open-in-new-tab
+  - search
+
+markdown_extensions:
+  - admonition
+  - pymdownx.details
+  - pymdownx.superfences
