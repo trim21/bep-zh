@@ -1,0 +1,8 @@
+version: 3
+
+tasks:
+  update:
+    cmds:
+      - git add .
+      - git commit -m update
+      - git push
