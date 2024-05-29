@@ -1,0 +1,848 @@
+
+<!doctype html>
+<html lang="zh" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+      
+        <link rel="prev" href="..">
+      
+      
+      
+      <link rel="icon" href="../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.0, mkdocs-material-9.5.25">
+    
+    
+      
+        <title>bep 3 BitTorrent 协议规范 - BEP</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.6543a935.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Microsoft+YaHei:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Microsoft YaHei";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce((e,_)=>(e<<5)-e+_.charCodeAt(0),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    <body dir="ltr">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#bep-3-bittorrent" class="md-skip">
+          跳转至
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="页眉">
+    <a href=".." title="BEP" class="md-header__button md-logo" aria-label="BEP" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54Z"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3V6m0 5h18v2H3v-2m0 5h18v2H3v-2Z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            BEP
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              bep 3 BitTorrent 协议规范
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+    
+      <script>var media,input,key,value,palette=__md_get("__palette");if(palette&&palette.color){"(prefers-color-scheme)"===palette.color.media&&(media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']"),palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent"));for([key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
+      </label>
+      <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="搜索" placeholder="搜索" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12Z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="查找">
+        
+        <button type="reset" class="md-search__icon md-icon" title="清空当前内容" aria-label="清空当前内容" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41Z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            正在初始化搜索引擎
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/trim21/bep-zh/" title="前往仓库" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.5.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="导航栏" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href=".." title="BEP" class="md-nav__button md-logo" aria-label="BEP" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54Z"/></svg>
+
+    </a>
+    BEP
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/trim21/bep-zh/" title="前往仓库" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.5.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href=".." class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    BEP 中文翻译
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  <span class="md-ellipsis">
+    bep 3 BitTorrent 协议规范
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  <span class="md-ellipsis">
+    bep 3 BitTorrent 协议规范
+  </span>
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="目录">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      目录
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#bittorrent" class="md-nav__link">
+    <span class="md-ellipsis">
+      分发 BitTorrent 文件需要以下的组件
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      为了分发文件，需要进行以下流程
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      为了进行下载，下载者需要如下的操作
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#bencoding" class="md-nav__link">
+    <span class="md-ellipsis">
+      bencoding，种子文件的编码格式
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      种子文件
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="种子文件">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#info-dictionary" class="md-nav__link">
+    <span class="md-ellipsis">
+      info dictionary
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#trackers" class="md-nav__link">
+    <span class="md-ellipsis">
+      Trackers
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Trackers">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#info_hash" class="md-nav__link">
+    <span class="md-ellipsis">
+      info_hash
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#peer_id" class="md-nav__link">
+    <span class="md-ellipsis">
+      peer_id
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#ip" class="md-nav__link">
+    <span class="md-ellipsis">
+      ip
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#port" class="md-nav__link">
+    <span class="md-ellipsis">
+      port
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#uploaded" class="md-nav__link">
+    <span class="md-ellipsis">
+      uploaded
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#downloaded" class="md-nav__link">
+    <span class="md-ellipsis">
+      downloaded
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#left" class="md-nav__link">
+    <span class="md-ellipsis">
+      left
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#event" class="md-nav__link">
+    <span class="md-ellipsis">
+      event
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_4" class="md-nav__link">
+    <span class="md-ellipsis">
+      响应
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="目录">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      目录
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#bittorrent" class="md-nav__link">
+    <span class="md-ellipsis">
+      分发 BitTorrent 文件需要以下的组件
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      为了分发文件，需要进行以下流程
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      为了进行下载，下载者需要如下的操作
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#bencoding" class="md-nav__link">
+    <span class="md-ellipsis">
+      bencoding，种子文件的编码格式
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      种子文件
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="种子文件">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#info-dictionary" class="md-nav__link">
+    <span class="md-ellipsis">
+      info dictionary
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#trackers" class="md-nav__link">
+    <span class="md-ellipsis">
+      Trackers
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Trackers">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#info_hash" class="md-nav__link">
+    <span class="md-ellipsis">
+      info_hash
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#peer_id" class="md-nav__link">
+    <span class="md-ellipsis">
+      peer_id
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#ip" class="md-nav__link">
+    <span class="md-ellipsis">
+      ip
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#port" class="md-nav__link">
+    <span class="md-ellipsis">
+      port
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#uploaded" class="md-nav__link">
+    <span class="md-ellipsis">
+      uploaded
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#downloaded" class="md-nav__link">
+    <span class="md-ellipsis">
+      downloaded
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#left" class="md-nav__link">
+    <span class="md-ellipsis">
+      left
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#event" class="md-nav__link">
+    <span class="md-ellipsis">
+      event
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_4" class="md-nav__link">
+    <span class="md-ellipsis">
+      响应
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+  
+  
+
+
+<h1 id="bep-3-bittorrent">bep 3 BitTorrent 协议规范</h1>
+<p><a href="https://www.bittorrent.org/beps/bep_0003.html">bep 3 原始链接</a></p>
+<p>BitTorrent 是一种分发文件的协议。它通过 URL 识别内容，旨在与网络无缝集成。
+与普通 HTTP 相比，它的优势在于，当多个下载者同时下载同一文件时，
+下载者会相互上传，从而使文件源能够支持大量下载者，而只需适度增加其负载。</p>
+<h2 id="bittorrent">分发 BitTorrent 文件需要以下的组件</h2>
+<ol>
+<li>一个普通的文件服务器</li>
+<li>一个静态种子文件</li>
+<li>一个 BitTorrent tracker</li>
+<li>一个“原始”下载者</li>
+<li>终端用户浏览器</li>
+<li>终端用户下载器</li>
+</ol>
+<h2 id="_1">为了分发文件，需要进行以下流程</h2>
+<ol>
+<li>启动一个 <code>tracker</code></li>
+<li>运行一个普通的 web 服务器，比如 apache。</li>
+<li>将 <code>.torrent</code> 扩展名跟 mime type <code>application/x-bittorrent</code> 进行关联。</li>
+<li>从要分发的文件和 tracker 地址生成种子文件。</li>
+<li>通过 web 服务器等方式分发种子文件。</li>
+<li>以完整的文件和种子文件启动下载器，俗称做种。</li>
+</ol>
+<h2 id="_2">为了进行下载，下载者需要如下的操作</h2>
+<ol>
+<li>安装支持 BitTorrent 协议的一个下载器</li>
+<li>下载种子文件</li>
+<li>将种子文件添加到下载器</li>
+<li>选择下载路径，或者从之前未完成的下载恢复下载</li>
+<li>等待下载完成</li>
+<li>关闭客户端，或者保持客户端启动状态进行做种</li>
+</ol>
+<h2 id="bencoding">bencoding，种子文件的编码格式</h2>
+<p>bencoding 包含四种数据类型</p>
+<ul>
+<li>字符串（二进制字符串）。编码为 长度+ <code>:</code> + 字符串内容。 例如 <code>4:spam</code> 代表 <code>'spam'</code></li>
+<li>整数。 以为 <code>i</code> 开头，<code>e</code>结尾，中间为整数的十进制格式。比如 <code>i3e</code> 为 <code>3</code>, <code>i-3e</code> 为 <code>-3</code>，
+  整数没有大小限制。 不允许使用<code>i-0e</code>， 只有 <code>i0</code> 合法。 除了 <code>0</code> 的编码 <code>i0e</code>
+  以外不可以有前导 <code>0</code>， <code>i03e</code> 不合法。</li>
+<li>列表。 以 <code>l</code> 开头， <code>e</code> 结束，中间顺序穿插 bencode
+  格式的元素内容。比如 <code>['spam', 'eggs']</code> 编码为 <code>l4:spam4:eggse</code></li>
+<li>字典。字典是以 <code>d</code> 开头， <code>e</code> 结尾的键值对。 按照键-值的顺序编码。
+  <code>{'cow': 'moo', 'spam': 'eggs'}</code>
+  编码为 <code>d3:cow3:moo4:spam4:eggse</code>。 <code>{'spam': ['a', 'b']}</code> 编码为 <code>d4:spaml1:a1:bee</code>。
+  字典中的键必须唯一。
+  字典的键必须为字符串，而且必须按顺序出现。(sorted as raw strings, not alphanumerics)</li>
+</ul>
+<h2 id="_3">种子文件</h2>
+<p>种子文件 （.torrent 文件） 是一个 bencode 编码的字典，并且包含以下的 key：</p>
+<p><code>announce</code> tracker url 地址</p>
+<p><code>info</code> 一个字典，并且需要包含以下的 key：</p>
+<h3 id="info-dictionary">info dictionary</h3>
+<p><code>name</code>: 一个 utf-8 编码的 bencode 字符串，建议用户保存文件或者文件夹的路径。</p>
+<p><code>piece length</code>：区块长度。为了进行传输，文件会被分为固定大小的区块。
+最后一个区块除外，由于文件长度原因，最后一个区块可能会被截断。
+比较常见的区块长度是二的幂（2^n），非二的幂也是允许的值。常见值有 2^18 = 256K 等。</p>
+<p><code>pieces</code>：区块哈希，长度为 20 的正整数倍。每 20 字节为对应区块的 sha1 哈希值。
+比如 <code>pieces[0:20]</code> 为第一个哈希，对应第一个区块的 sha1 哈希值。
+<code>pieces[20:40]</code> 为第二个哈希值，为第二个区块的 sha1 哈希。</p>
+<p>对于单文件种子，还必须包含 <code>length</code> 键，表示种子锁对应的单个文件的大小。</p>
+<p>对于多文件种子，还必须包含 <code>files</code> 键，<code>files</code> 是一个字典组成的列表，每个字典必需包含以下的
+keys：</p>
+<p><code>length</code>： 当前文件的长度。</p>
+<p><code>path</code>：一个 <code>list[str]</code>, 由 UTF-8 字符串组成的列表，最后一个元素为文件名，前面的元素为文件夹层级。</p>
+<p>单文件种子的 <code>name</code> 为种子所对应的文件，多文件种子的 <code>name</code> 为对应文件夹的名称。</p>
+<h3 id="trackers">Trackers</h3>
+<p>客户端使用 <code>GET</code> 请求像 tracker 请求其他节点，请求必需包含以下的参数。</p>
+<p>（
+关于 HTTP 请求和 GET
+请求的参数，可以查看<a href="https://en.wikipedia.org/wiki/Query_string#Web_forms">维基百科</a> ）</p>
+<h4 id="info_hash">info_hash</h4>
+<p>20 字节长度的 sha1 哈希，对种子文件的 <code>info</code> 部分进行哈希生成。在HTTP
+query中需要<a href="https://zh.wikipedia.org/wiki/%E7%99%BE%E5%88%86%E5%8F%B7%E7%BC%96%E7%A0%81">进行转义</a>。</p>
+<p>由于bencode的特，可以先解析整个种子文件，对 <code>info</code> 部分进行bencode编码，
+然后再计算对应 sha1 哈希。
+info_hash 只应在种子文件的 bencode 正确的情况下进行计算，如果种子文件的 bencode
+编码错误，解析器必需拒绝对应的种子文件。</p>
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<p>这里的 info_hash 不是常见的 40 字节长度的 info_hash 字符串，而是原始的二进制数据。</p>
+<p>常见的 40 字节长度的 info_hash 实际上是原始 info_hash 的 hex 编码结果。</p>
+<p>以 <a href="../fixtures/ubuntu-24.04-live-server-amd64.iso.torrent">ubuntu-24.04-live-server-amd64</a> 为例，
+这个种子的 info_hash 的原始二进制值为 [129, 175, 7, 73, 25, 21, 65, 93, 173, 69, 248, 124, 12, 42, 229, 47, 174, 146, 192, 107]</p>
+<p>但是由于二进制内容不一定能够对应可显示的内容，所以一般以 hex 编码为 <code>81af07491915415dad45f87c0c2ae52fae92c06b</code>。</p>
+<div class="highlight"><pre><span></span><code><span class="kn">import</span> <span class="nn">hashlib</span>
+<span class="kn">from</span> <span class="nn">urllib.parse</span> <span class="kn">import</span> <span class="n">quote</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="n">quote</span><span class="p">(</span><span class="nb">bytes</span><span class="o">.</span><span class="n">fromhex</span><span class="p">(</span><span class="s2">&quot;81af07491915415dad45f87c0c2ae52fae92c06b&quot;</span><span class="p">)))</span>
+
+<span class="c1"># 或者</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="n">quote</span><span class="p">(</span><span class="n">hashlib</span><span class="o">.</span><span class="n">sha1</span><span class="p">(</span><span class="o">...</span><span class="p">)</span><span class="o">.</span><span class="n">digest</span><span class="p">()))</span>
+</code></pre></div>
+</div>
+<p>使用 python 从种子中计算 info_hash 的例子：</p>
+<div class="highlight"><pre><span></span><code><span class="kn">import</span> <span class="nn">hashlib</span>
+<span class="kn">from</span> <span class="nn">bencode2</span> <span class="kn">import</span> <span class="n">bdecode</span><span class="p">,</span> <span class="n">bencode</span>
+
+<span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s1">&#39;ubuntu-24.04-live-server-amd64.torrent&#39;</span><span class="p">,</span> <span class="s1">&#39;rb&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+    <span class="n">data</span> <span class="o">=</span> <span class="n">bdecode</span><span class="p">(</span><span class="n">f</span><span class="o">.</span><span class="n">read</span><span class="p">())</span>
+
+<span class="n">info_hash</span> <span class="o">=</span> <span class="n">hashlib</span><span class="o">.</span><span class="n">sha1</span><span class="p">(</span><span class="n">bencode</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="sa">b</span><span class="s1">&#39;info&#39;</span><span class="p">]))</span><span class="o">.</span><span class="n">digest</span><span class="p">()</span>
+</code></pre></div>
+<p>（需要使用 pip 安装 <a href="https://pypi.org/project/bencode2/">bencode2</a>)</p>
+<h4 id="peer_id">peer_id</h4>
+<p>一个 20 字节长度的字符串，代表客户端的 ID。每个客户端应该为每个下载都生成一个随机 ID 。
+在URL中需要进行转义。</p>
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<p>常见客户端的 peer id 会遵循一定的规范，以方便 tracker 判断请求所对应的客户端。</p>
+</div>
+<h4 id="ip">ip</h4>
+<p>可选参数，用于向tracker汇报客户端所在的ip地址。</p>
+<h4 id="port">port</h4>
+<p>客户端的bt协议监听窗口。</p>
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<p>出于安全考虑，许多 tracker 禁止客户端使用特权端口和一些其他常见协议的端口。建议使用高位随机端口。</p>
+</div>
+<h4 id="uploaded">uploaded</h4>
+<p>客户端目前为止的上传量，以十进制字符串格式编码。</p>
+<h4 id="downloaded">downloaded</h4>
+<p>客户端目前为止的下载量，以十进制字符串格式编码。</p>
+<h4 id="left">left</h4>
+<p>peer 仍然想要下载的字节大小，以十进制字符串格式编码。
+这一项不能通过种子对应的文件大小和当前下载量进行计算，
+因为peer可能在下载前就拥有部分文件，
+或者从别的节点接收到了损坏的数据导致某些区块进行了重新下载。</p>
+<h4 id="event">event</h4>
+<p>可选参数，<code>started</code>, <code>completed</code>, 或者 <code>stopped</code>。或者为空字符串，跟不传递此参数效果相同。</p>
+<p>如果未传递此参数，则表示这是在定期汇报。</p>
+<p>客户端在下载开始时汇报 <code>started</code>，
+在下载完成时汇报 <code>completed</code>。
+在对应的下载停止时汇报 <code>stopped</code></p>
+<p>如果本地文件已经下载完成，不需要汇报 <code>started</code> 事件。</p>
+<h3 id="_4">响应</h3>
+<p>tracker 的响应为 bencode 编码的字典。</p>
+<p>如果汇报失败，应该包含一个 key <code>failure reason</code>，对应的值应为字符串，包含一个人类可读的错误描述。</p>
+<p>如果汇报成功，应该包含两个 key <code>interval</code> 和 <code>peers</code>。</p>
+<p><code>interval</code> 的值为整数，表示客户端下一次请求前应该等待的秒数。</p>
+<p><code>peers</code> 的值为一个字典组成的列表（<code>list[dict]</code>），每个字典应该包含
+keys <code>peer id</code>，<code>ip</code>, <code>port</code>。</p>
+<p><code>ip</code> 为字符串，表示其他peer的ip地址或者dns name。<code>port</code> 则为数字。<code>peer id</code> 见前文。</p>
+<p>peer
+也有可能请求紧凑（compact）的响应，在<a href="https://www.bittorrent.org/beps/bep_0023.html">bep 0023</a>
+中进行定义。</p>
+<p>peers 也有可能通过 UDP
+协议进行汇报，在<a href="https://www.bittorrent.org/beps/bep_0015.html">bep 15</a>中进行定义。</p>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    <script id="__config" type="application/json">{"base": "..", "features": [], "search": "../assets/javascripts/workers/search.b8dbb3d2.min.js", "translations": {"clipboard.copied": "\u5df2\u590d\u5236", "clipboard.copy": "\u590d\u5236", "search.result.more.one": "\u5728\u8be5\u9875\u4e0a\u8fd8\u6709 1 \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.more.other": "\u5728\u8be5\u9875\u4e0a\u8fd8\u6709 # \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.none": "\u6ca1\u6709\u627e\u5230\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.one": "\u627e\u5230 1 \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.other": "# \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.placeholder": "\u952e\u5165\u4ee5\u5f00\u59cb\u641c\u7d22", "search.result.term.missing": "\u7f3a\u5c11", "select.version": "\u9009\u62e9\u5f53\u524d\u7248\u672c"}}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.081f42fc.min.js"></script>
+      
+        <script src="../js/open_in_new_tab.js"></script>
+      
+    
+  </body>
+</html>
