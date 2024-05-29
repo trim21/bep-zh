@@ -735,9 +735,9 @@ keys：</p>
 关于 HTTP 请求和 GET
 请求的参数，可以查看<a href="https://en.wikipedia.org/wiki/Query_string#Web_forms">维基百科</a> ）</p>
 <h4 id="info_hash">info_hash</h4>
-<p>20 字节长度的 sha1 哈希，对种子文件的 <code>info</code> 部分进行哈希生成。在HTTP
-query中需要<a href="https://zh.wikipedia.org/wiki/%E7%99%BE%E5%88%86%E5%8F%B7%E7%BC%96%E7%A0%81">进行转义</a>。</p>
-<p>由于bencode的特，可以先解析整个种子文件，对 <code>info</code> 部分进行bencode编码，
+<p>20 字节长度的 sha1 哈希，对种子文件的 <code>info</code> 部分进行哈希生成。在 HTTP
+query 中需要<a href="https://zh.wikipedia.org/wiki/%E7%99%BE%E5%88%86%E5%8F%B7%E7%BC%96%E7%A0%81">进行转义</a>。</p>
+<p>由于 bencode 的特，可以先解析整个种子文件，对 <code>info</code> 部分进行 bencode 编码，
 然后再计算对应 sha1 哈希。
 info_hash 只应在种子文件的 bencode 正确的情况下进行计算，如果种子文件的 bencode
 编码错误，解析器必需拒绝对应的种子文件。</p>
@@ -770,15 +770,15 @@ info_hash 只应在种子文件的 bencode 正确的情况下进行计算，如�
 <p>（需要使用 pip 安装 <a href="https://pypi.org/project/bencode2/">bencode2</a>)</p>
 <h4 id="peer_id">peer_id</h4>
 <p>一个 20 字节长度的字符串，代表客户端的 ID。每个客户端应该为每个下载都生成一个随机 ID 。
-在URL中需要进行转义。</p>
+在 URL 中需要进行转义。</p>
 <div class="admonition tip">
 <p class="admonition-title">Tip</p>
 <p>常见客户端的 peer id 会遵循一定的规范，以方便 tracker 判断请求所对应的客户端。</p>
 </div>
 <h4 id="ip">ip</h4>
-<p>可选参数，用于向tracker汇报客户端所在的ip地址。</p>
+<p>可选参数，用于向 tracker 汇报客户端所在的 ip 地址。</p>
 <h4 id="port">port</h4>
-<p>客户端的bt协议监听窗口。</p>
+<p>客户端的 bt 协议监听窗口。</p>
 <div class="admonition tip">
 <p class="admonition-title">Tip</p>
 <p>出于安全考虑，许多 tracker 禁止客户端使用特权端口和一些其他常见协议的端口。建议使用高位随机端口。</p>
@@ -790,7 +790,7 @@ info_hash 只应在种子文件的 bencode 正确的情况下进行计算，如�
 <h4 id="left">left</h4>
 <p>peer 仍然想要下载的字节大小，以十进制字符串格式编码。
 这一项不能通过种子对应的文件大小和当前下载量进行计算，
-因为peer可能在下载前就拥有部分文件，
+因为 peer 可能在下载前就拥有部分文件，
 或者从别的节点接收到了损坏的数据导致某些区块进行了重新下载。</p>
 <h4 id="event">event</h4>
 <p>可选参数，<code>started</code>, <code>completed</code>, 或者 <code>stopped</code>。或者为空字符串，跟不传递此参数效果相同。</p>
@@ -806,7 +806,7 @@ info_hash 只应在种子文件的 bencode 正确的情况下进行计算，如�
 <p><code>interval</code> 的值为整数，表示客户端下一次请求前应该等待的秒数。</p>
 <p><code>peers</code> 的值为一个字典组成的列表（<code>list[dict]</code>），每个字典应该包含
 keys <code>peer id</code>，<code>ip</code>, <code>port</code>。</p>
-<p><code>ip</code> 为字符串，表示其他peer的ip地址或者dns name。<code>port</code> 则为数字。<code>peer id</code> 见前文。</p>
+<p><code>ip</code> 为字符串，表示其他 peer 的 ip 地址或者 dns name。<code>port</code> 则为数字。<code>peer id</code> 见前文。</p>
 <p>peer
 也有可能请求紧凑（compact）的响应，在<a href="../bep_0023/">bep 0023</a>
 中进行定义。</p>

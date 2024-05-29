@@ -389,7 +389,7 @@
 <h1 id="bep-23-tracker">bep 23 紧凑 Tracker 响应</h1>
 <p><a href="https://www.bittorrent.org/beps/bep_0023.html">bep 23 原始链接</a></p>
 <h2 id="_1">摘要</h2>
-<p>为了减少tracker响应的大小，和减少tracker的资源消耗，tracker可以返回紧凑的响应</p>
+<p>为了减少 tracker 响应的大小，和减少 tracker 的资源消耗，tracker 可以返回紧凑的响应</p>
 <p>本文档中的 "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT",
 "RECOMMENDED", "MAY", and "OPTIONAL" 等关键词定义与 IETF RFC 2119 <sup id="fnref:1"><a class="footnote-ref" href="#fn:1">1</a></sup> 相同.</p>
 <h2 id="overview">Overview</h2>
@@ -403,20 +403,20 @@ bytes bencoding overhead. Bencoded integers are also variable length but since i
 port number, it cannot be more than 7 bytes including bencoding overhead. Thus,</p>
 <pre><code>total peer list length in bytes &lt; n * ( 23 + 259 + 7 )
 </code></pre>
-<p>现在tracker可以以一种更紧凑的方式进行响应，每个ipv4地址仅仅需要6字节。
-前4字节表示32-bit的ipv4地址，后2字节表示端口数，字节和端口都使用网络字节顺，也就是大端序。</p>
-<p>建议（SUGGESTED） tracker默认返回紧凑响应。
-客户端也可以在请求中添加 <code>compact=0</code> 来建议客户端优先使用原始格式（bep3格式）进行响应，
-也可以通过添加 <code>compact=1</code> 来建议tracker优先使用紧凑格式进行响应。</p>
+<p>现在 tracker 可以以一种更紧凑的方式进行响应，每个 ipv4 地址仅仅需要 6 字节。
+前 4 字节表示 32-bit 的 ipv4 地址，后 2 字节表示端口数，字节和端口都使用网络字节顺，也就是大端序。</p>
+<p>建议（SUGGESTED） tracker 默认返回紧凑响应。
+客户端也可以在请求中添加 <code>compact=0</code> 来建议客户端优先使用原始格式（bep3 格式）进行响应，
+也可以通过添加 <code>compact=1</code> 来建议 tracker 优先使用紧凑格式进行响应。</p>
 <p>客户端的 <code>compact</code> 参数仅仅是建议性的，tracker 可以（MAY）任意选择一种格式，
 客户端必需（MUST）同时支持两种响应。</p>
 <p>例如：</p>
 <pre><code>GET /announce?peer_id=aaaaaaaaaaaaaaaaaaaa&amp;info_hash=aaaaaaaaaaaaaaaaaaaa
 &amp;port=6881&amp;left=0&amp;downloaded=100&amp;uploaded=0&amp;compact=1
 </code></pre>
-<p>紧凑响应仍然使用 <code>peers</code> key，但是对应的值是二进制字符串，而非bencode列表。</p>
+<p>紧凑响应仍然使用 <code>peers</code> key，但是对应的值是二进制字符串，而非 bencode 列表。</p>
 <p>紧凑响应不包括 <code>peer id</code>。</p>
-<p>例如：
+<p>例如：</p>
 <div class="highlight"><pre><span></span><code><span class="kn">import</span> <span class="nn">socket</span>
 <span class="kn">import</span> <span class="nn">struct</span>
 <span class="kn">import</span> <span class="nn">itertools</span>
@@ -456,7 +456,7 @@ port number, it cannot be more than 7 bytes including bencoding overhead. Thus,<
     <span class="n">raw</span> <span class="o">=</span> <span class="n">peers</span><span class="p">[</span><span class="n">i</span> <span class="p">:</span> <span class="n">i</span> <span class="o">+</span> <span class="mi">6</span><span class="p">]</span>
     <span class="n">raw_addr</span><span class="p">,</span> <span class="n">port</span> <span class="o">=</span> <span class="n">packer</span><span class="o">.</span><span class="n">unpack</span><span class="p">(</span><span class="n">raw</span><span class="p">)</span>
     <span class="nb">print</span><span class="p">(</span><span class="n">socket</span><span class="o">.</span><span class="n">inet_ntoa</span><span class="p">(</span><span class="n">raw_addr</span><span class="p">),</span> <span class="n">port</span><span class="p">)</span>
-</code></pre></div></p>
+</code></pre></div>
 <hr />
 <div class="footnote">
 <hr />
