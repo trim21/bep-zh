@@ -403,7 +403,7 @@ bytes bencoding overhead. Bencoded integers are also variable length but since i
 port number, it cannot be more than 7 bytes including bencoding overhead. Thus,</p>
 <pre><code>total peer list length in bytes &lt; n * ( 23 + 259 + 7 )
 </code></pre>
-<p>现在客tracker可以以一种更紧凑的方式进行响应，每个ipv4地址仅仅需要6字节。
+<p>现在tracker可以以一种更紧凑的方式进行响应，每个ipv4地址仅仅需要6字节。
 前4字节表示32-bit的ipv4地址，后2字节表示端口数，字节和端口都使用网络字节顺，也就是大端序。</p>
 <p>建议（SUGGESTED） tracker默认返回紧凑响应。
 客户端也可以在请求中添加 <code>compact=0</code> 来建议客户端优先使用原始格式（bep3格式）进行响应，
