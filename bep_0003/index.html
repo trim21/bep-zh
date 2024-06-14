@@ -785,8 +785,16 @@ info_hash 只应在种子文件的 bencode 正确的情况下进行计算，如�
 </div>
 <h4 id="uploaded">uploaded</h4>
 <p>客户端目前为止的上传量，以十进制字符串格式编码。</p>
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<p>虽然原始规范没有定义，但一般来说会发送 <code>started</code> 事件后的上传量，以字节数计算。</p>
+</div>
 <h4 id="downloaded">downloaded</h4>
 <p>客户端目前为止的下载量，以十进制字符串格式编码。</p>
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<p>虽然原始规范没有定义，但一般来说会发送 <code>started</code> 事件后累积的下载量，以字节数计算。</p>
+</div>
 <h4 id="left">left</h4>
 <p>peer 仍然想要下载的字节大小，以十进制字符串格式编码。
 这一项不能通过种子对应的文件大小和当前下载量进行计算，
