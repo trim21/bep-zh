@@ -828,7 +828,34 @@ keys <code>peer id</code>，<code>ip</code>, <code>port</code>。</p>
 <p>peers 也有可能通过 UDP
 协议进行汇报，在<a href="https://www.bittorrent.org/beps/bep_0015.html">bep 15</a>中进行定义。</p>
 <h1 id="peer-protocol">peer protocol</h1>
-<p>TODO</p>
+<p>peer 协议可能跑在 TCP 或者 <a href="https://www.bittorrent.org/beps/bep_0029.html">uTP</a> 上。</p>
+<p>peer 协议是对称的全双工协议，两个peer发送的消息格式是相同的。</p>
+<p>协议中发送的所有整数都被编码为四字节大端字节序（<code>uint32_t</code>）。</p>
+<p>peer 协议由两部分组成，握手和 peer 消息</p>
+<h2 id="_5">握手</h2>
+<p>握手为固定长度的 40+8+20+20 字节消息</p>
+<ol>
+<li>固定字符串 <code>b"\x13BitTorrent protocol"</code></li>
+<li>8 字节的 extension message </li>
+<li>20 bytes info_hash，info_hash 的计算见前文。</li>
+<li>20 bytes peer id</li>
+</ol>
+<h2 id="_6">消息流</h2>
+<p>握手完成后，接下来是事件流。每个消息以接下来的消息长度作为前缀，长度为 4 字节的无符号整数。</p>
+<p>如果长度为0，说明是 keep alive 消息，事件可以忽略。</p>
+<p>如果长度不为0，接下来的1个字节为消息id，消息id有以下的几种情况：</p>
+<ul>
+<li>0 - choke</li>
+<li>1 - unchoke</li>
+<li>2 - interested</li>
+<li>3 - not interested</li>
+<li>4 - have</li>
+<li>5 - bitfield</li>
+<li>6 - request</li>
+<li>7 - piece</li>
+<li>8 - cancel</li>
+</ul>
+<p>（bep 0006 中还定义了 fast extension，对消息 id 进行了扩展）</p>
 
 
 
